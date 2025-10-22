@@ -7,6 +7,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: setup postgres
+        uses: ikalnytskyi/action-setup-postgres@v8
+        id: postgres
+      
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - name: Build Go server
+        run: go build -o main .
+
+      - name: Start Go server
+        run: |
+          ./main &
+          echo "Server started in background"
+        env:
+          POSTGRES_DSN: ${{ steps.postgres.outputs.connection-uri }}
+
       - uses: grafana/setup-k6-action@v1
       - uses: grafana/run-k6-action@v1
         env:
