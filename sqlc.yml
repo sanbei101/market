@@ -1,0 +1,20 @@
+version: "2"
+servers:
+- engine: postgresql
+  uri: "postgres://postgres:secretpassword@101.201.49.155:5432/mydatabase?sslmode=disable"
+sql:
+  - engine: "postgresql"
+    queries:
+      - "sql/product"
+    schema:
+      - "sql/product/schema.sql"
+    gen:
+      go:
+        package: "model"
+        out: "model"
+        sql_package: "pgx/v5"
+        overrides:
+          - db_type: "jsonb"
+            go_type: 
+              import: "encoding/json"
+              type: "RawMessage"
