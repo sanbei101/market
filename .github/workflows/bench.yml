@@ -14,6 +14,11 @@ jobs:
           postgres-version: "18"
         id: postgres
       
+      - name: Initialize database schema
+        run: |
+          psql ${{ steps.postgres.outputs.connection-uri }} -f ./sql/product/schema.sql
+          psql ${{ steps.postgres.outputs.connection-uri }} -c "\dt"
+      
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
