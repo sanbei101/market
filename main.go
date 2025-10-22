@@ -16,10 +16,6 @@ func main() {
 	log.DefaultLogger = log.Logger{
 		Level:  log.InfoLevel,
 		Caller: 1,
-		Writer: &log.MultiEntryWriter{
-			&log.ConsoleWriter{ColorOutput: true},
-			// &log.FileWriter{Filename: "app.log", MaxSize: 100 << 20},
-		},
 	}
 	dsn := os.Getenv("POSTGRES_DSN")
 	if dsn == "" {
@@ -42,6 +38,6 @@ func main() {
 			"message": "pong",
 		})
 	})
-
+	log.Info().Str("mode", gin.Mode()).Msg("Starting server on :8080")
 	router.Run(":8080")
 }
