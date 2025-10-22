@@ -10,6 +10,8 @@ jobs:
 
       - name: setup postgres
         uses: ikalnytskyi/action-setup-postgres@v8
+        with:
+          postgres-version: "18"
         id: postgres
       
       - name: Setup Go
@@ -26,6 +28,9 @@ jobs:
           echo "Server started in background"
         env:
           POSTGRES_DSN: ${{ steps.postgres.outputs.connection-uri }}
+          
+      - name: check if server is running
+        run: curl http://localhost:8080/ping
 
       - uses: grafana/setup-k6-action@v1
       - uses: grafana/run-k6-action@v1

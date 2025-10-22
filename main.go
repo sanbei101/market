@@ -30,6 +30,7 @@ func main() {
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to connect to database")
 	}
+	log.Info().Msgf("Connected to database: %s", dsn)
 	queries := model.New(pgpool)
 	router := handle.InitRouter(queries)
 
