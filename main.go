@@ -22,6 +22,7 @@ func main() {
 		log.Info().Msg("DSN Evnvironment variable not set, using default")
 		dsn = "postgres://postgres:secretpassword@101.201.49.155:5432/mydatabase?sslmode=disable"
 	}
+
 	config, err := pgxpool.ParseConfig(dsn)
 	if err != nil {
 		log.Fatal().Err(err).Msg("Failed to parse DSN")
@@ -32,6 +33,21 @@ func main() {
 	}
 	log.Info().Msgf("Connected to database: %s", dsn)
 	queries := model.New(pgpool)
+	isTest := os.Getenv("IS_TEST")
+	if isTest == "true" {
+		err = queries.GenerateTestData(context.TODO())
+		if err != nil {
+			log.Fatal().Err(err).Msg("Failed to generate test data")
+		}
+		err = queries.CallGenerateTestData(context.TODO(), model.CallGenerateTestDataParams{
+			CategoryCount:  5,
+			SpuPerCategory: 10,
+			SkuPerSpu:      20,
+		})
+		if err != nil {
+			log.Fatal().Err(err).Msg("Failed to call generate test data")
+		}
+	}
 	router := handle.InitRouter(queries)
 
 	router.GET("/ping", func(c *gin.Context) {

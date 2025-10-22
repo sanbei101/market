@@ -28,6 +28,7 @@ jobs:
           echo "Server started in background"
         env:
           POSTGRES_DSN: ${{ steps.postgres.outputs.connection-uri }}
+          IS_TEST: "true"
           
       - name: check if server is running
         run: curl http://localhost:8080/ping
