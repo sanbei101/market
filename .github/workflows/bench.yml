@@ -1,7 +1,7 @@
+name: k6-bench
 on:
   push:
     branches: [ main ]
-
 jobs:
   k6-bench:
     runs-on: ubuntu-latest
@@ -40,9 +40,9 @@ jobs:
 
       - uses: grafana/setup-k6-action@v1
       - uses: grafana/run-k6-action@v1
-        env:
-          K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
-          K6_CLOUD_PROJECT_ID: ${{ secrets.K6_CLOUD_PROJECT_ID }}
+        # env:
+        #   K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
+        #   K6_CLOUD_PROJECT_ID: ${{ secrets.K6_CLOUD_PROJECT_ID }}
         with:
           path: |
             ./test/k6.js
